@@ -1,5 +1,6 @@
-username = "cloud8421"
-
-star_stream = Maneo.Github.Stream.by_username(username)
-
-Enum.take(star_stream, 2) |> IO.inspect
+"cloud8421"
+|> Maneo.Github.Stream.by_username
+|> Flow.from_enumerable
+|> Flow.group_by(fn(r) -> "#{r.created_at.year}-#{r.created_at.month}" end)
+|> Enum.take(2)
+|> IO.inspect
