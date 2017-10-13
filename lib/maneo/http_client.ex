@@ -6,6 +6,15 @@ defmodule Maneo.HTTPClient do
   alias Maneo.HTTPClient.{ErrorResponse,
                           Response}
 
+  def get(url, headers) do
+    headers = Enum.map(headers, fn({k, v}) ->
+      {String.to_charlist(k), String.to_charlist(v)}
+    end)
+
+    :httpc.request(:get, {String.to_charlist(url), headers}, [], [])
+    |> process_response
+  end
+
   def get(url, headers, qs_params) do
     headers = Enum.map(headers, fn({k, v}) ->
       {String.to_charlist(k), String.to_charlist(v)}
