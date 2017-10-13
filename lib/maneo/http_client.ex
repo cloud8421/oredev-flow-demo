@@ -3,6 +3,9 @@ defmodule Maneo.HTTPClient do
   Simple http client based on httpc.
   """
 
+  alias Maneo.HTTPClient.{ErrorResponse,
+                          Response}
+
   def get(url, headers, qs_params) do
     headers = Enum.map(headers, fn({k, v}) ->
       {String.to_charlist(k), String.to_charlist(v)}
