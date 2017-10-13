@@ -1,16 +1,4 @@
 defmodule Maneo.HTTPClient do
-  defmodule Response do
-    @moduledoc false
-    defstruct status_code: 100,
-              headers: [],
-              body: <<>>
-  end
-
-  defmodule ErrorResponse do
-    @moduledoc false
-    defstruct message: nil
-  end
-
   @moduledoc """
   Simple http client based on httpc.
   """
