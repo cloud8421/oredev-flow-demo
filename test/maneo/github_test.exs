@@ -4,7 +4,7 @@ defmodule Maneo.GithubTest do
   alias Maneo.Github
 
   test "parses hypermedia links out of headers" do
-    headers = 
+    headers =
       [{"cache-control", "public, max-age=60, s-maxage=60"},
       {"date", "Fri, 13 Oct 2017 09:33:59 GMT"},
       {"etag", "\"d32c52ee9c9218a92ba8d17ee4a547d8\""}, {"server", "GitHub.com"},
@@ -27,5 +27,24 @@ defmodule Maneo.GithubTest do
     assert Github.parse_links(headers) ==
       %{next: "https://api.github.com/user/537608/starred?page=2",
         last: "https://api.github.com/user/537608/starred?page=15"}
+  end
+
+  test "parses starred repos" do
+    response = File.cwd!
+               |> Path.join("/test/fixtures/starred_repos.json")
+               |> File.read!
+               |> Poison.decode!
+    {:ok, created_at, 0} = DateTime.from_iso8601("2011-01-26T19:01:12Z")
+    {:ok, pushed_at, 0}  = DateTime.from_iso8601("2011-01-26T19:06:43Z")
+    {:ok, starred_at, 0} = DateTime.from_iso8601("2011-01-16T19:06:43Z")
+
+    assert Github.parse_starred_repos(response) ==
+      [%Github.Repo{id: 1296269,
+                    owner: "octocat",
+                    name: "Hello-World",
+                    description: "This your first repo!",
+                    created_at: created_at,
+                    pushed_at: pushed_at,
+                    starred_at: starred_at}]
   end
 end

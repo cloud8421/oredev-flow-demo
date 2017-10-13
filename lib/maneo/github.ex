@@ -1,5 +1,6 @@
 defmodule Maneo.Github do
-  alias Maneo.HTTPClient
+  alias Maneo.{Github.Repo,
+               HTTPClient}
 
   @link_matcher ~r/^<(?<url>.*)>; rel="(?<rel>.*)"$/
 
@@ -24,7 +25,7 @@ defmodule Maneo.Github do
          {:ok, data} <- Poison.decode(body),
          links <- parse_links(resp_headers)
     do
-      {:ok, data, links}
+      {:ok, parse_starred_repos(data), links}
     else
       %HTTPClient.Response{status_code: status_code, body: body} ->
         {:error, {status_code, body}}
@@ -33,12 +34,39 @@ defmodule Maneo.Github do
     end
   end
 
+  def parse_starred_repos(data) do
+    Enum.map(data, &parse_starred_repo/1)
+  end
+
   def parse_links(headers) do
     :proplists.get_value("link", headers)
     |> String.split(", ", trim: true)
     |> Enum.map(&parse_link/1)
     |> Enum.into(%{})
   end
+
+  defp parse_starred_repo(starred_repo) do
+    starred_at = starred_repo
+                 |> Map.get("starred_at")
+                 |> parse_datetime
+
+    created_at = starred_repo
+                 |> get_in(["repo", "created_at"])
+                 |> parse_datetime
+
+    pushed_at  = starred_repo
+                 |> get_in(["repo", "pushed_at"])
+                 |> parse_datetime
+
+    %Repo{id: get_in(starred_repo, ["repo", "id"]),
+          owner: get_in(starred_repo, ["repo", "owner", "login"]),
+          name: get_in(starred_repo, ["repo", "name"]),
+          description: get_in(starred_repo, ["repo", "description"]),
+          created_at: created_at,
+          pushed_at: pushed_at,
+          starred_at: starred_at}
+  end
+
 
   defp parse_link(link) do
     %{"rel" => rel, "url" => url} = Regex.named_captures(@link_matcher, link)
@@ -49,4 +77,11 @@ defmodule Maneo.Github do
   defp parse_rel("first"), do: :first
   defp parse_rel("last"), do: :last
   defp parse_rel("prev"), do: :prev
+
+  defp parse_datetime(datetime_string) do
+    case DateTime.from_iso8601(datetime_string) do
+      {:ok, datetime, _} -> datetime
+      _error -> nil
+    end
+  end
 end
