@@ -1,0 +1,79 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type":"shell",
+      "command": "mix compile",
+      "taskName": "compile",
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+         "reveal": "silent"
+      }
+    },
+    {
+      "type":"shell",
+      "command": "mix dialyzer",
+      "taskName": "dialyzer",
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning"
+      ],
+      "group": "build",
+      "presentation": {
+         "reveal": "silent"
+      }
+    },
+    {
+      "type":"shell",
+      "taskName": "test",
+      "command": "mix test",
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning",
+        "$mixTestFailure"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+         "reveal": "always"
+      }
+    },
+    {
+      "type":"shell",
+      "taskName": "test file",
+      "command": "mix test ${relativeFile}",
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning",
+        "$mixTestFailure"
+      ],
+      "group": "test",
+      "presentation": {
+         "reveal": "always"
+      }
+    },
+    {
+      "type":"shell",
+      "taskName": "test file at line",
+      "command": "mix test ${relativeFile}:${lineNumber}",
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning",
+        "$mixTestFailure"
+      ],
+      "group": "test",
+      "presentation": {
+         "reveal": "always"
+      }
+    }
+  ]
+}
