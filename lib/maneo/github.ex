@@ -1,11 +1,16 @@
 defmodule Maneo.Github do
   alias Maneo.HTTPClient
 
-  @link_matcher ~r/^<(?<url>.*)>; rel="(?<rel>.*)"$/ 
+  @link_matcher ~r/^<(?<url>.*)>; rel="(?<rel>.*)"$/
+
+  def url_for(username) do
+    "https://api.github.com/users/" <> username <> "/starred"
+  end
 
   def get_stars_by_username(username) do
-    url = "https://api.github.com/users/" <> username <> "/starred"
-    get_stars_by_url(url)
+    username
+    |> url_for
+    |> get_stars_by_url
   end
 
   def get_stars_by_url(url) do
@@ -15,7 +20,7 @@ defmodule Maneo.Github do
     }
     with %HTTPClient.Response{status_code: 200,
                               headers: resp_headers,
-                              body: body} <- HTTPClient.get(url, headers), 
+                              body: body} <- HTTPClient.get(url, headers),
          {:ok, data} <- Poison.decode(body),
          links <- parse_links(resp_headers)
     do
@@ -30,7 +35,7 @@ defmodule Maneo.Github do
 
   def parse_links(headers) do
     :proplists.get_value("link", headers)
-    |> String.split(", ", trim: true) 
+    |> String.split(", ", trim: true)
     |> Enum.map(&parse_link/1)
     |> Enum.into(%{})
   end
