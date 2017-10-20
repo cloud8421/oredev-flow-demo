@@ -1,4 +1,4 @@
-defmodule Maneo.Github.Repo do
+defmodule Maneo.Github.StarredRepo do
   defstruct id: nil,
             owner: nil,
             name: nil,

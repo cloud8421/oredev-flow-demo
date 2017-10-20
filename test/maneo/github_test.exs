@@ -39,12 +39,12 @@ defmodule Maneo.GithubTest do
     {:ok, starred_at, 0} = DateTime.from_iso8601("2011-01-16T19:06:43Z")
 
     assert Github.parse_starred_repos(response) ==
-      [%Github.Repo{id: 1296269,
-                    owner: "octocat",
-                    name: "Hello-World",
-                    description: "This your first repo!",
-                    created_at: created_at,
-                    pushed_at: pushed_at,
-                    starred_at: starred_at}]
+      [%Github.StarredRepo{id: 1296269,
+                           owner: "octocat",
+                           name: "Hello-World",
+                           description: "This your first repo!",
+                           created_at: created_at,
+                           pushed_at: pushed_at,
+                           starred_at: starred_at}]
   end
 end

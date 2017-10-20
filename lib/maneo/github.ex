@@ -1,5 +1,5 @@
 defmodule Maneo.Github do
-  alias Maneo.{Github.Repo,
+  alias Maneo.{Github.StarredRepo,
                HTTPClient}
 
   @link_matcher ~r/^<(?<url>.*)>; rel="(?<rel>.*)"$/
@@ -12,14 +12,14 @@ defmodule Maneo.Github do
     "https://api.github.com/users/" <> username <> "/starred"
   end
 
-  @spec get_stars_by_username(username) :: {:ok, [Github.Repo.t]} | {:error, term}
+  @spec get_stars_by_username(username) :: {:ok, [StarredRepo.t]} | {:error, term}
   def get_stars_by_username(username) do
     username
     |> url_for
     |> get_stars_by_url
   end
 
-  @spec get_stars_by_url(url) :: {:ok, [Github.Repo.t]} | {:error, term}
+  @spec get_stars_by_url(url) :: {:ok, [StarredRepo.t]} | {:error, term}
   def get_stars_by_url(url) do
     headers = %{
       "Accept" => "application/vnd.github.v3.star+json",
@@ -64,7 +64,7 @@ defmodule Maneo.Github do
                  |> get_in(["repo", "pushed_at"])
                  |> parse_datetime
 
-    %Repo{id: get_in(starred_repo, ["repo", "id"]),
+    %StarredRepo{id: get_in(starred_repo, ["repo", "id"]),
           owner: get_in(starred_repo, ["repo", "owner", "login"]),
           name: get_in(starred_repo, ["repo", "name"]),
           description: get_in(starred_repo, ["repo", "description"]),
