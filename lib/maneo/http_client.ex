@@ -6,7 +6,20 @@ defmodule Maneo.HTTPClient do
   alias Maneo.HTTPClient.{ErrorResponse,
                           Response}
 
-  def get(url, headers) do
+  @type url :: String.t
+  @type headers :: [{String.t, String.t}]
+  @type qs_params :: %{String.t => String.t | number | atom}
+  @type content_type :: String.t
+
+  @doc """
+  Issues an HTTP request to the specified url, optionally passing a list
+  of headers.
+
+  iex> Maneo.HTTPClient.get("http://example.com")
+  iex> Maneo.HTTPClient.get("http://example.com", [{"User-Agent", "My App 2.1"}])
+  """
+  @spec get(url, headers) :: {:ok, Response.t} | {:error, ErrorResponse.t}
+  def get(url, headers \\ []) do
     headers = Enum.map(headers, fn({k, v}) ->
       {String.to_charlist(k), String.to_charlist(v)}
     end)
@@ -15,6 +28,16 @@ defmodule Maneo.HTTPClient do
     |> process_response
   end
 
+  @doc """
+  Issues an HTTP request to the specified endpoint, explicitly passing
+  a list of headers and a map of query string params (which will be
+  encoded automatically).
+
+  iex> Maneo.HTTPClient.get("http://example.com",
+                            [{"User-Agent", "My App 2.1"}],
+                            %{"page" => 1})
+  """
+  @spec get(url, headers, qs_params) :: {:ok, Response.t} | {:error, ErrorResponse.t}
   def get(url, headers, qs_params) do
     headers = Enum.map(headers, fn({k, v}) ->
       {String.to_charlist(k), String.to_charlist(v)}
@@ -25,16 +48,17 @@ defmodule Maneo.HTTPClient do
     |> process_response
   end
 
-  def post(url, headers, body, content_type \\ 'application/json') do
+  @spec post(url, headers, binary, content_type) :: {:ok, Response.t} | {:error, ErrorResponse.t}
+  def post(url, headers, body, content_type \\ "application/json") do
     headers = Enum.map(headers, fn({k, v}) ->
       {String.to_charlist(k), String.to_charlist(v)}
     end)
 
-    :httpc.request(:post, {String.to_charlist(url), headers, content_type, body}, [], [])
+    :httpc.request(:post, {String.to_charlist(url), headers, String.to_charlist(content_type), body}, [], [])
     |> process_response
   end
 
-  def process_response({:ok, result}) do
+  defp process_response({:ok, result}) do
     {{_, status, _}, headers, body} = result
 
     headers = Enum.map(headers, fn({k, v}) ->
@@ -46,7 +70,7 @@ defmodule Maneo.HTTPClient do
               body: body}
   end
 
-  def process_response({:error, reason}) do
+  defp process_response({:error, reason}) do
     %ErrorResponse{message: reason}
   end
 end

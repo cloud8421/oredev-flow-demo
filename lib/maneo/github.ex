@@ -4,16 +4,22 @@ defmodule Maneo.Github do
 
   @link_matcher ~r/^<(?<url>.*)>; rel="(?<rel>.*)"$/
 
+  @type username :: String.t
+  @type url :: String.t
+
+  @spec url_for(username) :: url
   def url_for(username) do
     "https://api.github.com/users/" <> username <> "/starred"
   end
 
+  @spec get_stars_by_username(username) :: {:ok, [Github.Repo.t]} | {:error, term}
   def get_stars_by_username(username) do
     username
     |> url_for
     |> get_stars_by_url
   end
 
+  @spec get_stars_by_url(url) :: {:ok, [Github.Repo.t]} | {:error, term}
   def get_stars_by_url(url) do
     headers = %{
       "Accept" => "application/vnd.github.v3.star+json",
@@ -78,6 +84,7 @@ defmodule Maneo.Github do
   defp parse_rel("last"), do: :last
   defp parse_rel("prev"), do: :prev
 
+  defp parse_datetime(nil), do: nil
   defp parse_datetime(datetime_string) do
     case DateTime.from_iso8601(datetime_string) do
       {:ok, datetime, _} -> datetime
