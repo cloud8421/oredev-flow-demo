@@ -1,4 +1,4 @@
-defmodule Maneo.HTTPClient.Response do
+defmodule Oredev.HTTPClient.Response do
   @moduledoc false
   defstruct status_code: 100,
             headers: [],
@@ -6,7 +6,7 @@ defmodule Maneo.HTTPClient.Response do
 
   @type t :: %__MODULE__{
           status_code: pos_integer,
-          headers: Maneo.HTTPClient.headers(),
+          headers: Oredev.HTTPClient.headers(),
           body: binary
         }
 end

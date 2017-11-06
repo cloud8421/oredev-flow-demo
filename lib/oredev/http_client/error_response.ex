@@ -1,4 +1,4 @@
-defmodule Maneo.HTTPClient.ErrorResponse do
+defmodule Oredev.HTTPClient.ErrorResponse do
   @moduledoc false
   defstruct message: nil
 

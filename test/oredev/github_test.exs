@@ -1,7 +1,7 @@
-defmodule Maneo.GithubTest do
+defmodule Oredev.GithubTest do
   use ExUnit.Case, async: true
 
-  alias Maneo.Github
+  alias Oredev.Github
 
   test "parses hypermedia links out of headers" do
     headers =

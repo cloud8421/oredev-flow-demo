@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :maneo, key: :value
+#     config :oredev, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:maneo, :key)
+#     Application.get_env(:oredev, :key)
 #
 # You can also configure a 3rd-party app:
 #

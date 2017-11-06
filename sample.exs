@@ -1,5 +1,5 @@
 "cloud8421"
-|> Maneo.Github.Stream.by_username()
+|> Oredev.Github.Stream.by_username()
 |> Flow.from_enumerable()
 |> Flow.group_by(fn r ->
      case r.pushed_at do

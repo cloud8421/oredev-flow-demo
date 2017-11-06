@@ -1,9 +1,9 @@
-defmodule Maneo.Mixfile do
+defmodule Oredev.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :maneo,
+      app: :oredev,
       version: "0.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule Maneo.Mixfile do
   def application do
     [
       extra_applications: [:logger, :inets, :ssl],
-      mod: {Maneo.Application, []}
+      mod: {Oredev.Application, []}
     ]
   end
 

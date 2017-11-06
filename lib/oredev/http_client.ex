@@ -1,9 +1,9 @@
-defmodule Maneo.HTTPClient do
+defmodule Oredev.HTTPClient do
   @moduledoc """
   Simple http client based on httpc.
   """
 
-  alias Maneo.HTTPClient.{ErrorResponse, Response}
+  alias Oredev.HTTPClient.{ErrorResponse, Response}
 
   @type url :: String.t()
   @type headers :: [{String.t(), String.t()}]
@@ -14,8 +14,8 @@ defmodule Maneo.HTTPClient do
   Issues an HTTP request to the specified url, optionally passing a list
   of headers.
 
-  iex> Maneo.HTTPClient.get("http://example.com")
-  iex> Maneo.HTTPClient.get("http://example.com", [{"User-Agent", "My App 2.1"}])
+  iex> Oredev.HTTPClient.get("http://example.com")
+  iex> Oredev.HTTPClient.get("http://example.com", [{"User-Agent", "My App 2.1"}])
   """
   @spec get(url, headers) :: {:ok, Response.t()} | {:error, ErrorResponse.t()}
   def get(url, headers \\ []) do
@@ -33,7 +33,7 @@ defmodule Maneo.HTTPClient do
   a list of headers and a map of query string params (which will be
   encoded automatically).
 
-  iex> Maneo.HTTPClient.get("http://example.com",
+  iex> Oredev.HTTPClient.get("http://example.com",
                             [{"User-Agent", "My App 2.1"}],
                             %{"page" => 1})
   """

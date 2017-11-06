@@ -1,5 +1,5 @@
-defmodule Maneo.Github do
-  alias Maneo.{Github.StarredRepo, HTTPClient}
+defmodule Oredev.Github do
+  alias Oredev.{Github.StarredRepo, HTTPClient}
 
   @link_matcher ~r/^<(?<url>.*)>; rel="(?<rel>.*)"$/
 

@@ -1,11 +1,11 @@
-defmodule Maneo.Github.Stream do
+defmodule Oredev.Github.Stream do
   def by_username(username) do
     start_fn = fn ->
-      Maneo.Github.url_for(username)
+      Oredev.Github.url_for(username)
     end
 
     next_fn = fn next_url ->
-      case Maneo.Github.get_stars_by_url(next_url) do
+      case Oredev.Github.get_stars_by_url(next_url) do
         {:ok, data, links} ->
           case Map.get(links, :next) do
             nil -> {:halt, next_url}
