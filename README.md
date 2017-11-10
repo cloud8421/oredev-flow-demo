@@ -1,21 +1,13 @@
 # Oredev
 
-**TODO: Add description**
+This application shows how [Flow](https://github.com/elixir-lang/flow) can be used to model parallel consumption of data from a stream.
+
+## Structure
+
+The application knows how to fetch the starred repositories of a Github user and aggregate them by month.
+
+All examples are in the `/examples` directory and can be run with `mix run <filename`.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `oredev` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:oredev, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/oredev](https://hexdocs.pm/oredev).
-
+Assuming you have Elixir >= 1.5 installed, you can use `mix deps.get` to install dependencies.
